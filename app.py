@@ -131,6 +131,23 @@ KNOWLEDGE_BASE = [
             "front desk during office hours, 9 AM to 5 PM."
         ),
     },
+    {
+        # Placeholder facts, same spirit as the rest of the KB — swap in
+        # your institute's real name, address, and course list.
+        "id": "kb_about",
+        "section": "About the College",
+        "content": (
+            "The college's name is Sunrise Polytechnic, located in Pune, "
+            "Maharashtra, India. The courses offered are three-year "
+            "diploma programs in Computer Engineering, Mechanical "
+            "Engineering, Electronics and Telecommunication Engineering, "
+            "Civil Engineering, and Information Technology. The college "
+            "is affiliated with the State Board of Technical Education "
+            "and focuses on affordable, industry-oriented technical "
+            "education. The main campus houses classrooms, labs, a "
+            "library, and a hostel for outstation students."
+        ),
+    },
 ]
 
 
@@ -185,6 +202,11 @@ SCOPE_KEYWORDS = {
     "library", "id card", "campusassist", "college", "diwali break",
     "internal", "external", "condonation", "detained", "admission",
     "student", "roll no", "id",
+    # general college-info additions
+    "sunrise", "polytechnic", "course", "courses", "program", "programs",
+    "branch", "branches", "department", "departments", "campus",
+    "located", "location", "address", "affiliated", "affiliation",
+    "about the college", "your college", "this college",
 }
 
 MIN_RETRIEVAL_SCORE = 3.0
@@ -220,8 +242,8 @@ def is_injection_attempt(query):
 
 OFF_TOPIC_REFUSAL = (
     "I can only help with CampusAssist topics — attendance, exams, fees, "
-    "hostel, or the academic calendar. That question is outside what I can "
-    "answer."
+    "hostel, the academic calendar, or general information about the "
+    "college. That question is outside what I can answer."
 )
 INJECTION_REFUSAL = (
     "I can't follow instructions embedded in a message like that. "
@@ -372,19 +394,22 @@ TOOL_FUNCTIONS = {
 # ---------------------------------------------------------------------------
 
 SYSTEM_PROMPT = (
-    "You are the CampusAssist support assistant for Sunrise Polytechnic "
-    "College. Only answer questions about attendance, exams, fees, hostel "
-    "rules, or the academic calendar.\n\n"
+    "You are the CampusAssist support assistant for Sunrise Polytechnic, "
+    "Pune. Only answer questions about attendance, exams, fees, hostel "
+    "rules, the academic calendar, or general information about the "
+    "college itself (its name, location, affiliation, and the courses/"
+    "programs it offers).\n\n"
     "For ANY question about a specific student's attendance, result, or "
     "fee status, you MUST call the matching tool (check_attendance, "
     "check_exam_result, check_fee_due) rather than guessing.\n"
     "For a complaint, call raise_complaint but tell the student it needs "
     "their confirmation first if it isn't already given.\n"
-    "For general policy questions (attendance rules, exam structure, fee "
-    "due dates, hostel timings, calendar dates), answer using ONLY the "
-    "retrieved context below — never invent a rule or number that isn't "
-    "in it. If the context doesn't cover it, say you don't have that "
-    "information rather than guessing."
+    "For policy and general-info questions (attendance rules, exam "
+    "structure, fee due dates, hostel timings, calendar dates, or facts "
+    "about the college itself), answer using ONLY the retrieved context "
+    "below — never invent a rule, number, or fact that isn't in it. If "
+    "the context doesn't cover it, say you don't have that information "
+    "rather than guessing."
 )
 
 MAX_TURNS = 4
