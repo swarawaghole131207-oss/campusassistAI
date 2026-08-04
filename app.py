@@ -400,7 +400,10 @@ def agent(user_query, history=None, confirmed=False):
     context_chunks = retrieve(user_query, top_k=3)
     context_text = "\n\n".join(c["text"] for c in context_chunks)
 
-    if history is None:
+    if not history:
+        # Covers both history=None (first-ever call) and history=[] (Gradio's
+        # CONVERSATION_HISTORY reset to empty at the start of a new chat) —
+        # either way there's no system message yet to overwrite, so start fresh.
         messages = [
             {"role": "system", "content": f"{SYSTEM_PROMPT}\n\nRetrieved context:\n{context_text}"},
         ]
