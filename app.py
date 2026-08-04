@@ -488,24 +488,82 @@ def chat_fn(message, history):
     return reply
 
 
-demo = gr.ChatInterface(
-    fn=chat_fn,
-    title="CampusAssist AI",
-    description=(
-        "Ask about attendance, exams, fees, hostel rules, the academic "
-        "calendar, or check a student's status (try any ID from S101 to S163)."
-    ),
-    examples=[
-        "What's the minimum attendance required?",
-        "What is S101's attendance?",
-        "How do I apply for revaluation?",
-        "What time does the hostel gate close?",
-    ],
+# --- Brand theme -----------------------------------------------------------
+# Palette ties directly to "Sunrise" in the college name: a literal
+# sunrise gradient (navy night -> coral -> gold) used once, in the header,
+# as the one signature visual element. Everything else stays quiet.
+SUNRISE_THEME = gr.themes.Soft(
+    primary_hue=gr.themes.colors.orange,
+    secondary_hue=gr.themes.colors.blue,
+    neutral_hue=gr.themes.colors.slate,
+    font=[gr.themes.GoogleFont("Inter"), "sans-serif"],
+    font_mono=[gr.themes.GoogleFont("JetBrains Mono"), "monospace"],
+).set(
+    button_primary_background_fill="#1D3557",
+    button_primary_background_fill_hover="#16283F",
+    button_primary_text_color="#FFFFFF",
+    block_title_text_weight="600",
+    body_background_fill="#FAF7F2",
 )
+
+CUSTOM_CSS = """
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
+
+.gradio-container { max-width: 780px !important; margin: 0 auto !important; }
+
+#campus-header {
+    background: linear-gradient(100deg, #1D3557 0%, #E76F51 55%, #F2A541 100%);
+    border-radius: 14px;
+    padding: 26px 30px;
+    margin-bottom: 16px;
+    color: #FFFFFF;
+}
+#campus-header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
+}
+#campus-header p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.92;
+}
+
+/* Hide the default "Built with Gradio" footer for a cleaner, branded look */
+footer { display: none !important; }
+"""
+
+with gr.Blocks(title="CampusAssist AI") as demo:
+    gr.HTML(
+        """
+        <div id="campus-header">
+            <h1>Sunrise Polytechnic</h1>
+            <p>CampusAssist AI &mdash; attendance, exams, fees, hostel &amp; college info, answered instantly</p>
+        </div>
+        """
+    )
+    gr.ChatInterface(
+        fn=chat_fn,
+        chatbot=gr.Chatbot(
+            avatar_images=(None, "🌅"),
+            height=480,
+            show_label=False,
+        ),
+        examples=[
+            "What's the minimum attendance required?",
+            "What is S101's attendance?",
+            "How do I apply for revaluation?",
+            "What time does the hostel gate close?",
+        ],
+    )
 
 if __name__ == "__main__":
     # host 0.0.0.0 and the PORT env var are required for Render to detect the app
     demo.launch(
         server_name="0.0.0.0",
         server_port=int(os.environ.get("PORT", 7860)),
+        theme=SUNRISE_THEME,
+        css=CUSTOM_CSS,
     )
