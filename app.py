@@ -372,7 +372,7 @@ TOOL_FUNCTIONS = {
 # ---------------------------------------------------------------------------
 
 SYSTEM_PROMPT = (
-    "You are the CampusAssist support assistant for Pimpri Chinchwad Polytechnic "
+    "You are the CampusAssist support assistant for Sunrise Polytechnic "
     "College. Only answer questions about attendance, exams, fees, hostel "
     "rules, or the academic calendar.\n\n"
     "For ANY question about a specific student's attendance, result, or "
